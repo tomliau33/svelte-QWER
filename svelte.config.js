@@ -4,6 +4,7 @@ import adapterVercel from '@sveltejs/adapter-vercel';
 import adapterNetlify from '@sveltejs/adapter-netlify';
 import adapterCloudflare from '@sveltejs/adapter-cloudflare';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
+import adapter from '@zeabur/svelte-adapter';
 
 /** @type {import('@sveltejs/kit').Config} */
 const config = {
@@ -32,6 +33,8 @@ function getAdapter() {
     return adapterNetlify();
   } else if (Object.keys(process.env).some((key) => key.includes('CF_PAGES'))) {
     return adapterCloudflare();
+  } else if (Object.keys(process.env).some((key) => key.includes('ZEABUR'))) {
+    return adapter();
   } else {
     return process.env.ADAPTER === 'node'
       ? adapterNode({ out: 'build' })
